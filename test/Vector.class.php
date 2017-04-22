@@ -33,7 +33,7 @@ class Vector {
 	}
 	
 	public function __toString () {
-		return("Vector: x ".$this->_x." y ".$this->_y." z ".$this->_z);
+		return("Vector: x ".$this->_x." y ".$this->_y." z ".$this->_z.PHP_EOL);
 	}
 	
 	public function getX() {
