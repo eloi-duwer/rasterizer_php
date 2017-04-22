@@ -9,9 +9,10 @@ class Matrix {
 	const RZ = "Oz_ROTATION";
 	const TRANSLATION = "TRANSLATION";
 	const PROJECTION = "PROJECTION";
+	const CUSTOM = "CUSTOM";
 
 	static $verbose = false;
-	private $_matrix = array();
+	protected $_matrix = array();
 
 	public function doc () {
 		print(file_get_contents("Matrix.doc.txt"));
@@ -40,7 +41,7 @@ class Matrix {
 		return($str);
 	}
 	public function __construct(array $kwargs) {
-		$this->_init_base_matrix();
+		$this->_matrix = $this->_init_base_matrix();
 		$func = "_init_".$kwargs['preset'];
 		$this->$func($kwargs);
 		if (self::$verbose == true)
@@ -48,12 +49,14 @@ class Matrix {
 	}
 
 	private function _init_base_matrix() {
+		$matrix = array();
 		for ($i = 0; $i < 4; $i++) {
-			$this->_matrix[$i] = array();
+			$matrix[$i] = array();
 			for($j = 0; $j < 4; $j++) {
-				$this->_matrix[$i][$j] = 0;
+				$matrix[$i][$j] = 0;
 			}
 		}
+		return($matrix);
 	}
 
 	private function _init_IDENTITY (array $kwargs) {
@@ -103,6 +106,44 @@ class Matrix {
 		$this->_matrix[0][1] = -sin($ang);
 		$this->_matrix[1][0] = sin($ang);
 		$this->_matrix[1][1] = cos($ang);
+	}
+
+	private function _init_PROJECTION(array $kwargs) {
+		$fov = $kwargs['fov'];
+		$ratio = $kwargs['ratio'];
+		$near = $kwargs['near'];
+		$far = $kwargs['far'];
+		$this->_matrix[1][1] = 1 / tan(0.5 * deg2rad($fov));
+		$this->_matrix[0][0] = $this->_matrix[1][1] / $ratio;
+		$this->_matrix[2][2] = -($far + $near) / ($far - $near);
+		$this->_matrix[2][3] = - (2 * $far * $near) / ($far - $near);
+		$this->_matrix[3][2] = -1;
+	}
+
+	private function _init_CUSTOM(array $kwargs) {
+		$this->_matrix = $kwargs['mat'];
+	}
+
+	public function mult(Matrix $matrix) {
+		$res = $this->_init_base_matrix();
+		for($i = 0; $i < 4; $i++) {
+			for($j = 0; $j < 4; $j++) {
+				for($k = 0; $k < 4; $k++) {
+					$res[$i][$j] += $this->_matrix[$i][$k] * $matrix->_matrix[$k][$j];
+				}
+			}
+		}
+		$mat = new Matrix (array('preset' => Matrix::CUSTOM, 'mat' => $res));
+		return ($mat);
+	}
+
+	public function transformVertex(Vertex $vertex) {
+		$res = array();
+		for($i = 0; $i < 4; $i++) {
+			$res[$i] = $this->_matrix[$i][0] * $vertex->getX() + $this->_matrix[$i][1] * $vertex->getY() + $this->_matrix[$i][2] * $vertex->getZ() + $this->_matrix[$i][3] * $vertex->getW();
+		}
+		$ver = new Vertex(array('x' => $res[0], 'y' => $res[1], 'z' => $res[2], 'w' => $res[3]));
+		return ($ver);
 	}
 }
 
