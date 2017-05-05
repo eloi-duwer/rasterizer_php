@@ -147,9 +147,8 @@ class Matrix {
 		for($i = 0; $i < 4; $i++) {
 			$res[$i] = $this->_matrix[$i][0] * $vertex->getX() + $this->_matrix[$i][1] * $vertex->getY() + $this->_matrix[$i][2] * $vertex->getZ() + $this->_matrix[$i][3] * $vertex->getW();
 		}
-		if ($res[3] == 0)
-			$res[3] = 1;
-		return( new Vertex(array('x' => ($res[0] / $res[3]), 'y' => ($res[1] / $res[3]), 'z' => ($res[2] / $res[3]))));
+		$ver = new Vertex(array('x' => $res[0], 'y' => $res[1], 'z' => $res[2], 'w' => $res[3]));
+		return ($ver);
 	}
 
 	public function invertDiag() {

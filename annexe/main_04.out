@@ -1,8 +1,9 @@
 <- Camera ----------------------------------------------------------------------
 Your documentation here.
 ---------------------------------------------------------------------- Camera ->
+
 Camera instance constructed
-Camera( 
+Camera(
 + Origine: Vertex( x: 20.00, y: 20.00, z:80.00, w:1.00 )
 + tT:
 M | vtcX | vtcY | vtcZ | vtxO
