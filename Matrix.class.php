@@ -149,7 +149,19 @@ class Matrix {
 		}
 		if ($res[3] == 0)
 			$res[3] = 1;
-		return( new Vertex(array('x' => ($res[0] / $res[3]), 'y' => ($res[1] / $res[3]), 'z' => ($res[2] / $res[3]))));
+		return( new Vertex(array('x' => ($res[0] / $res[3]), 'y' => ($res[1] / $res[3]), 'z' => ($res[2] / $res[3]), 'color' => $vertex->getColor())));
+	}
+
+	public function transformMesh(array $mesh) {
+		$i = 0;
+		foreach ($mesh as $triangle) {
+			$A = $this->transformVertex($triangle->getA());
+			$B = $this->transformVertex($triangle->getB());
+			$C = $this->transformVertex($triangle->getC());
+			$tab[$i] = new Triangle($A, $B, $C);
+			$i++;
+		}
+		return ($tab);
 	}
 
 	public function invertDiag() {

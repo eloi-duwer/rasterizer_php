@@ -60,9 +60,22 @@ class Camera {
 		$x = (1 + $ndcVertex->getX()) * $this->_width / 2;
 		$y = (1 + $ndcVertex->getY()) * $this->_height / 2;
 		$z = $ndcVertex->getZ();
-		$res = new Vertex(array('x' => $x, 'y' => $y, 'z' => $z));
+		$res = new Vertex(array('x' => $x, 'y' => $y, 'z' => $z, 'color' => $worldVertex->getColor()));
 		return ($res);
 	}
+
+	public function watchMesh(array $mesh) {
+		$i = 0;
+		foreach ($mesh as $triangle) {
+			$A = $this->watchVertex($triangle->getA());
+			$B = $this->watchVertex($triangle->getB());
+			$C = $this->watchVertex($triangle->getC());
+			$tab[$i] = new Triangle($A, $B, $C);
+			$i++;
+		}
+		return ($tab);
+	}
+
 }
 
 ?>

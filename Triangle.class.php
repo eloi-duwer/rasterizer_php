@@ -7,10 +7,10 @@ class Triangle {
 	private $_B;
 	private $_C;
 
-	public function __construct (array $kwargs) {
-		$this->_A = $kwargs['A'];
-		$this->_B = $kwargs['B'];
-		$this->_C = $kwargs['C'];
+	public function __construct ($A, $B, $C) {
+		$this->_A = $A;
+		$this->_B = $B;
+		$this->_C = $C;
 		if (self::$verbose == true)
 			print ("Class Triangle constructed".PHP_EOL);
 	}
@@ -21,8 +21,21 @@ class Triangle {
 	}
 
 	public function __toString () {
-		return ("Point A: ".$this->_A.PHP_EOL."Point B: ".$this->_B.PHP_EOL."Point C".$this->_C.PHP_EOL);
+		return ("Point A: ".$this->_A.PHP_EOL."Point B: ".$this->_B.PHP_EOL."Point C: ".$this->_C.PHP_EOL);
 	}
+
+	public function getA() {
+		return $this->_A;
+	}
+
+	public function getB() {
+		return $this->_B;
+		}
+
+	public function getC() {
+		return $this->_C;
+	}
+
 }
 
 ?>

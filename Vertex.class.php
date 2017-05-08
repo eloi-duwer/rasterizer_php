@@ -22,7 +22,7 @@ class Vertex {
 		else
 			$this->_color = new Color(array("rgb" => 16777215));
 		if (self::$verbose == true)
-			print ("Vertex( x:".$this->_x.", y:".$this->_y.", z:".$this->_z.", w:".$this->_w." ".$this->_color." ) constructed".PHP_EOL);
+	print ("Vertex( x:".$this->_x.", y:".$this->_y.", z:".$this->_z.", w:".$this->_w." ".$this->_color." ) constructed".PHP_EOL);
 	}
 	
 	public function __destruct () {
@@ -71,7 +71,7 @@ class Vertex {
 	}
 	
 	public function getColor() {
-		return($this->_Color);
+		return($this->_color);
 	}
 }
 
